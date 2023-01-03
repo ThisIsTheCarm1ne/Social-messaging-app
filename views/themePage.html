@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+         <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0" />
+         <link rel="stylesheet" href="/static/themeStyle.css" type="text/css" />
+	 <title>{{ (index .Comment 0).Title }}</title>
+</head>
+<body>
+    <input type="checkbox" class="theme-switch" id="theme-switch">
+    <div id="page">
+        <div class="header" id="header">
+            <ul class="headerList">
+                <li class="headerListElement">
+                    <a href="/">plaster</a>
+                </li>
+                <li class="headerListElement">
+                    <a href="/">Home</a>
+                </li>
+                <li class="headerListElementSearchBar">
+                    <form class="searchForm" method="post" action="/search">
+                        <input required placeholder="Search for themes" type="search" class="tSearch" name="search" />
+                        <input type="submit" hidden />
+                    </form>
+                </li>
+            </ul>
+            <label class="button_theme_switch" for="theme-switch"></label>
+        </div>
+
+        <div class="theme">
+            <div class="themeContainer">
+                {{range .Comment}}
+                <div>
+                    {{if .Pic }}<img src="/static/{{.Pic}}">{{end}}
+                    <a href="/theme?themeId={{.Uid}}"><b>{{.Title}}</b></a>
+                    <p>{{.Date}}</p>
+                    <p>{{.Uid}}</p>
+                    <p>{{.Content}}</p>
+                </div>
+                {{end}}
+            </div>
+        </div>
+
+        <div class="form" id="form">
+            <form enctype="multipart/form-data" method="post" class="postForm" id="postForm" autocomplete="off">
+                <label for="postPic">...Insert Image...</label>
+                <input accept="image/*" type="file" class="postPic" name="postPic">
+
+                <label for="postName">What's the name of a new post?</label>
+                <input type="text" class="postName" name="postName">
+
+                <label for="postDesc">What's the description of a new post?</label>
+                <textarea type="text" class="postDesc" name="postDesc"></textarea>
+
+                <input type="hidden" class="postDate" name="postDate" value="">
+
+                <button type="submit"  class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <div class="mainPostList">
+            <div class="postList">
+                {{range .Theme}}
+                <div>
+                    {{if .Pic }}<img src="/static/{{.Pic}}">{{end}}
+                    <a class="prev" href="/theme/post?postId={{.Uid}}"><b>{{.Title}}</b></a>
+                    <p>{{.Date}}</p>
+                    <p>{{.Uid}}</p>
+                    <p>{{.Content}}</p>
+                    <a href="/report?type=post&id={{.Uid}}" class="buttonReport">!</a>
+                </div>
+                {{end}}
+            </div>
+        </div>
+
+        <aside class="popular">
+            <p class="popularText">Most popular themes for last 24 hours</p>
+            <div class="popularList">
+                {{range .SinglePost}}
+                <div>
+                    {{if .Pic }}<img src="/static/{{.Pic}}">{{end}}
+                    <a href="/theme?themeId={{.Uid}}">{{.Title}}</a>
+                    <p>{{.Date}}</p>
+                    <p>{{.Uid}}</p>
+                    <p>{{.Content}}</p>
+                </div>
+                {{end}}
+            </div>
+        </aside>
+
+        <div class="navigation">
+            <ul class="linksToComments" id="linksToComments"></ul>
+        </div>
+    </div>
+	<script>
+		/*
+		html search input
+		<label for="gsearch">Search Google:</label>
+		<input type="search" id="gsearch" name="gsearch">
+		*/
+
+		var date = new Date().toLocaleString('en-US', { timeZone: "Europe/London" });
+
+		var formInfo = document.forms['postForm'];
+		formInfo.postDate.value = date;
+
+		//var split = new Date().toLocaleString('en-US', {timeZone: 'Europe/Moscow'})
+
+		let localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+		var posts = {{.Theme}}
+		var theme = {{.Comment}}
+
+		console.log(theme[0])
+
+		var commentsLinks = document.getElementById("linksToComments");
+		
+		/*var linkPrev = document.createElement("a");
+                linkPrev.text = "Previous";
+                linkPrev.href = "/theme?themeId=" + theme[0].Uid + "&pageId=" + posts[0].Uid*-1;
+                commentsLinks.appendChild(linkPrev)
+
+		var link = document.createElement("a");
+		link.text = "Next";
+		link.href = "/theme?themeId=" + theme[0].Uid + "&pageId=" + posts[posts.length - 1].Uid;
+		commentsLinks.appendChild(link)*/
+
+		var linkPrevDiv = document.createElement("div");
+		linkPrevDiv.className = "linkPrev"
+
+		var linkPrevImage = document.createElement('img');
+		linkPrevImage.setAttribute("src", "/static/caret-back.svg");
+
+		var linkNextDiv = document.createElement("div");
+		linkNextDiv.className = "linkNext"
+
+		var linkNextImage = document.createElement('img');
+		linkNextImage.setAttribute("src", "/static/caret-forward.svg");
+
+		var linkPrev = document.createElement("a");
+                linkPrev.href = "/theme?themeId=" + theme[0].Uid + "&pageId=" + posts[0].Uid*-1;
+
+		linkPrev.appendChild(linkPrevImage)
+
+
+		linkPrevDiv.appendChild(linkPrev)
+                commentsLinks.appendChild(linkPrevDiv)
+
+		var link = document.createElement("a");
+		link.href = "/theme?themeId=" + theme[0].Uid + "&pageId=" + posts[posts.length - 1].Uid;
+		link.appendChild(linkNextImage)
+		linkNextDiv.appendChild(link)
+		commentsLinks.appendChild(linkNextDiv)
+
+		//Remember color theme
+		const themeSwitch = document.querySelector('.theme-switch');
+		themeSwitch.checked = localStorage.getItem('switchedTheme') === 'true';
+
+		themeSwitch.addEventListener('change', function (e) {
+			if(e.currentTarget.checked === true) {
+				// Add item to localstorage
+				localStorage.setItem('switchedTheme', 'true');
+			} else {
+				// Remove item if theme is switched back to normal
+				localStorage.removeItem('switchedTheme');
+			}
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+:root{
+    /*DARK THEME COLORS*/
+    --dark-Grey:   rgb(22,22,22);
+    --dark-sDGrey: rgb(32, 32, 32);
+    --dark-orange: rgb(255, 132, 0);
+    --dark-lGrey:  rgb(211, 207, 202);
+    --dark-trans:  rgba(0,0,0,0);
+    --dark_icon:   url(/static/sun-icon.svg);
+    --dark_color_of_icon: invert(92%) sepia(6%) saturate(191%) hue-rotate(354deg) brightness(91%) contrast(90%);
+
+    /*LIGHT THEME COLORS*/
+    --blackish:   rgb(20, 39, 78);
+    --navy:       rgb(57, 72, 103);
+    --white:      rgb(241, 246, 249);
+    --grayish:    rgb(155, 164, 180);
+    --light_icon: url(/static/moon-icon.svg);
+    --light_color_of_icon: invert(11%) sepia(39%) saturate(2210%) hue-rotate(198deg) brightness(98%) contrast(95%);
+
+    /*DEFAULT MODE*/
+    --main_color:  var(--dark-Grey);
+    --background-color: var(--dark-sDGrey);
+    --highlight_color: var(--dark-orange);
+    --main_text_color:  var(--dark-lGrey);
+    --trans:  var(--dark-trans);
+    --switch_icon: var(--dark_icon);
+    --switch_color_of_icon:  var(--dark_color_of_icon);
+}
+/*SWITCHED MODE*/
+.theme-switch:checked ~ #page {
+    --main_color:  var(--white);
+    --background-color: var(--grayish);
+    --highlight_color: var(--navy);
+    --main_text_color:  var(--blackish);
+    --trans:  var(--dark-trans);
+    --switch_icon: var(--light_icon);
+    --switch_color_of_icon:  var(--light_color_of_icon);
+}
+* {
+	box-sizing: border-box;
+}
+body{
+	/*background: var(--sDGrey);
+	color: var(--lGrey);*/
+	font-family: Arial, Helvetica, sans-serif;
+	line-height: 1.6em;
+	min-height: 100vh;
+	margin: 0;
+	width: 100%;
+    display: flex;
+    align-items: stretch;
+}
+#page{
+    width: 100%;
+    min-height: 100%;
+    background: var(--background-color);
+    color: var(--main_text_color);
+}
+.theme-switch{
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    clip: rect(1px, 1px, 1px, 1px);
+}
+.button_theme_switch{
+    cursor: pointer;
+    display: flex;
+    background-image: var(--switch_icon);
+    width: 4vh;
+    height: 4vh;
+    filter: var(--switch_color_of_icon);
+    margin-right: 5vh;
+}
+.header{
+	background-color: var(--main_color);
+	height: 5vh;
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+.headerList{
+	display: inline;
+	width: 100%;
+}
+.headerListElement{
+	display: inline;
+	margin: 1%;
+}
+.headerListElement a{
+	text-decoration: none;
+	color: var(--main_text_color);
+}
+.headerListElementSearchBar{
+	display: inline;
+	margin-left: 15%;
+}
+.searchForm{
+	width: 30%;
+	position: absolute;
+	left: 20%;
+	top: 0.7%;
+}
+.searchForm input{
+	width: 100%;
+	background-color: var(--background-color);
+	color: var(--main_text_color);
+	font-size: 100%;
+	border: 2px solid var(--background-color);
+	border-radius: 4vh;
+	padding: 0.5vh;
+}
+.searchOptions{
+	background-color: var(--background-color);
+	border: 2px solid var(--background-color);
+	border-radius: 4vh;
+	position: absolute;
+	color: var(--main_text_color);
+	width: 25%;
+	height: 100%;
+	top: 0.7%;
+	margin-left: 2vh;
+}
+.post{
+	width: 100%;
+}
+.commentForm{
+	position: fixed;
+	left: 4%;
+	top: 30%;
+	width: 25%;
+	text-align: center;
+	padding: 5vh;
+	margin: 0 auto;
+	background-color: var(--main_color);
+	border: 2vh solid var(--main_color);
+	border-radius: 4vh;
+}
+.commentForm input, textarea{
+	width: 100%;
+	height: 50px;
+	padding: 1%;
+	box-sizing: border-box;
+	resize: none;
+	border: none;
+	border-bottom: 2px solid var(--highlight_color);
+	text-align: center;
+	background-color: var(--trans);
+	color: var(--main_text_color);
+	font-family:inherit;
+	font-size: inherit;
+}
+.commentForm button{
+	text-align: center;
+	font-size: 3vh;
+	background-color: var(--trans);
+	color: var(--main_text_color);
+	border: none;
+	border-bottom: 2px solid var(--highlight_color);
+	transition-duration: 0.3s;
+}
+.commentForm button:hover{
+	background-color: var(--highlight_color);
+	color: var(--main_color);
+}
+.mainCommentList, .postContainer{
+	margin: 0 auto;
+	width: min-content;
+	min-width: 40%;
+}
+.commentList div, .postContainer div{
+	background: var(--main_color);
+	padding-top: 6vh;
+	padding-bottom: 2vh;
+	border: 1px solid inherit;
+	border-radius: 4vh;
+	text-decoration: none;
+	text-align: center;
+	list-style-type: none;
+	margin: 5vh;
+}
+.commentList div{
+	margin: 0 auto;
+        margin-bottom: 5vh;
+        width: 80%;
+}
+.commentList img, .postContainer img{
+	width: 100%; /*526 px*/
+	height: auto;
+}
+.commentList a, .postContainer a{
+	text-decoration: none;
+	color: var(--highlight_color);
+}
+.popularText{
+	text-align: center;
+	width: 100%;
+}
+.popular{
+	position: absolute;
+	left: 75%;
+	top: 40%;
+	width: min-content;
+	min-width: 20%;
+	text-align: center;
+	background: var(--main_color);
+	border: 1px solid var(--main_color);
+	border-radius: 4vh;
+}
+.popularList div{
+	background: var(--background-color);
+	width: 100%;
+	padding-top: 6vh;
+	padding-bottom: 2vh;
+	border: 1px solid inherit;
+	border-radius: 4vh;
+	text-align: center;
+	list-style-type: none;
+	margin-bottom: 3vh;
+}
+.popularList a{
+	text-decoration: none;
+	color: var(--highlight_color);
+}
+.popularList img{
+	width: 100%;
+	max-width: 600px;
+	max-height: 700px;
+	height: auto;
+}
+.navigation{
+	margin: auto;
+	width: 100%;
+    height: 10%;
+    background: var(--background-color);
+}
+.linkNext{
+	position: absolute;
+	left: 45.5%;
+	width: 4%;
+}
+.linkPrev{
+	position: absolute;
+	left: 50.5%;
+	width: 4%;
+}
+@media only screen and (max-width: 720px) {
+	/* For mobile phones: */
+	.mainCommentList, .commentList, .commentList li, .post, postContainer{
+		width: 100%;
+		position: relative;
+		right: 4%;
+	}
+	.popular{
+		width: 100%;
+		padding: 0%;
+		position: relative;
+		right: 6%;
+	}
+}

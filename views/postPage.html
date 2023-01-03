@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+         <meta charset="utf-8" />
+         <link rel="stylesheet" href="/static/postStyle.css" type="text/css" />
+</head>
+<body>
+	<input type="checkbox" class="theme-switch" id="theme-switch">
+    <div id="page">
+        <div class="header" id="header">
+            <ul class="headerList">
+                <li class="headerListElement">
+                    <a href="/">plaster</a>
+                </li>
+                <li class="headerListElement">
+                    <a href="/">Home</a>
+                </li>
+                <li class="headerListElementSearchBar">
+                    <form class="searchForm" method="post" action="/search">
+                        <input required placeholder="Search for themes" type="search" class="tSearch" name="search" />
+                        <input type="submit" hidden />
+                    </form>
+                </li>
+            </ul>
+            <label class="button_theme_switch" for="theme-switch"></label>
+        </div>
+
+        <div class="post">
+            <div class="postContainer">
+                {{range .Comment}}
+                    <div>
+                    {{if .Pic }}<img src="/static/{{.Pic}}">{{end}}
+                    <a href="/theme/post?postId={{.Uid}}"><b>{{.Title}}</b></a>
+                    <p>{{.Date}}</p>
+                    <p>{{.Uid}}</p>
+                    <p>{{.Content}}</p>
+                    </div>
+                {{end}}
+            </div>
+        </div>
+        
+        <div class="form" id="form">
+            <form enctype="multipart/form-data" method="post" class="commentForm" id="commentForm" autocomplete="off">
+                <label for="commentPic">...Insert Image...</label>
+                <input accept="image/*" type="file" class="commentPic" name="commentPic">
+
+                <label for="commentName">What's the name of a new comment?</label>
+                <input type="text" class="commentName" name="commentName">
+
+                <label for="commentDesc">What's the description of a new comment?</label>
+                <textarea type="text" class="commentDesc" name="commentDesc"></textarea>
+
+                <input type="hidden" class="commentDate" name="commentDate" value="">
+
+                <button type="submit"  class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <div class="mainCommentList">
+            <div class="commentList">
+                {{range .Theme}}
+                <div>
+                    {{if .Pic }}<img src="/static/{{.Pic}}">{{end}}
+                    <p><b>{{.Title}}</b></p>
+                    <p>{{.Date}}</p>
+                    <p>{{.Uid}}</p>
+                    <p>{{.Content}}</p>
+                </div>
+                {{end}}
+            </div>
+        </div>
+
+        <div class="navigation">
+            <ul id="linksToComments"></ul>
+        </div>
+    </div>
+	<script>
+		var date = new Date().toLocaleString('en-US', { timeZone: "Europe/London" });
+
+		var formInfo = document.forms['commentForm'];
+		formInfo.commentDate.value = date;
+
+		//var split = new Date().toLocaleString('en-US', {timeZone: 'Europe/Moscow'})
+
+		let localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+		var comments = {{.Theme}}
+		var post = {{.Comment}}
+
+		var commentLinks = document.getElementById("linksToComments");
+		
+		var linkPrevDiv = document.createElement("div");
+		linkPrevDiv.className = "linkPrev"
+
+		var linkPrevImage = document.createElement('img');
+		linkPrevImage.setAttribute("src", "/static/caret-back.svg");
+
+		var linkNextDiv = document.createElement("div");
+		linkNextDiv.className = "linkNext"
+
+		var linkNextImage = document.createElement('img');
+		linkNextImage.setAttribute("src", "/static/caret-forward.svg");
+
+		var linkPrev = document.createElement("a");
+		linkPrev.href = "/theme/post?postId=" + post[0].Uid + "&pageId=" + comments[0].Uid*-1;
+
+		linkPrev.appendChild(linkPrevImage)
+
+
+		linkPrevDiv.appendChild(linkPrev)
+		commentLinks.appendChild(linkPrevDiv)
+
+		var link = document.createElement("a");
+		link.href = "/theme/post?postId=" + post[0].Uid + "&pageId=" + comments[comments.length - 1].Uid;
+		link.appendChild(linkNextImage)
+		linkNextDiv.appendChild(link)
+		commentLinks.appendChild(linkNextDiv)
+		
+		//Remember color theme
+		const themeSwitch = document.querySelector('.theme-switch');
+		themeSwitch.checked = localStorage.getItem('switchedTheme') === 'true';
+
+		themeSwitch.addEventListener('change', function (e) {
+			if(e.currentTarget.checked === true) {
+				// Add item to localstorage
+				localStorage.setItem('switchedTheme', 'true');
+			} else {
+				// Remove item if theme is switched back to normal
+				localStorage.removeItem('switchedTheme');
+			}
+		});
+	</script>
+</body>
+</html>

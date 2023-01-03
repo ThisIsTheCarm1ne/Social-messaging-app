@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+         <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0" />
+         <link rel="stylesheet" href="/static/mainStyle.css" type="text/css" />
+	 <title>plaster - the news sharing page</title>
+</head>
+<body>
+    <input type="checkbox" class="theme-switch" id="theme-switch">
+    <div id="page">
+        <div class="header" id="header">
+            <ul class="headerList">
+                <li class="headerListElement">
+                    <a href="/">plaster</a>
+                </li>
+                <li class="headerListElement">
+                    <a href="/">Home</a>
+                </li>
+                <li class="headerListElementSearchBar">
+                    <form class="searchForm" method="post" action="/search">
+                        <input required placeholder="Search for themes" type="search" class="tSearch" name="search" />
+                        <input type="submit" hidden />
+                    </form>
+                </li>
+            </ul>
+            <label class="button_theme_switch" for="theme-switch"></label>
+        </div>
+        <form enctype="multipart/form-data" method="post" action="/" id="themeForm" class="themeForm" autocomplete="off">
+            <label for="themePic">...Insert Image...</label>
+            <input accept="image/*" type="file" class="themePic" name="themePic">
+
+            <textarea type="text" placeholder="Title of a new theme" required class="themeName" name="themeName"></textarea>
+
+            <textarea type="text" placeholder="Description of a new theme" required class="themeDesc" name="themeDesc"></textarea>
+
+            <input type="hidden" class="themeDate" name="themeDate" value="">
+
+            <button type="submit"  class="btn btn-primary">Submit</button>
+        </form>
+
+        <div class="mainThemeList">
+            <div class="themeList">
+                {{range .Theme}}
+                <div>
+                    {{if .Pic }}<img src="/static/{{.Pic}}">{{end}}
+                    <a class="prev" href="/theme?themeId={{.Uid}}"><b>{{.Title}}</b></a>
+                    <p>{{.Date}}</p>
+                    <p>{{.Uid}}</p>
+                    <p>{{.Content}}</p>
+                    <a href="/report?type=theme&id={{.Uid}}" class="buttonReport">!</a>
+                </div>
+                {{end}}
+            </div>
+        </div>
+
+        <div class="popular">
+            <p class="popularText">Most popular news for last 24 hours</p>
+            <div class="popularList">
+                {{range .SinglePost}}
+                <div>
+                    {{if .Pic }}<img src="/static/{{.Pic}}">{{end}}
+                    <a href="/theme?themeId={{.Uid}}"><b>{{.Title}}</b></a>
+                    <p>{{.Date}}</p>
+                    <p>{{.Uid}}</p>
+                    <p>{{.Content}}</p>
+                </div>
+                {{end}}
+            </div>
+        </div>
+
+        <div class="navigation">
+            <div id="linksToThemes" class="linksToThemes"></div>
+        </div>
+    </div>
+	<script>
+		var date = new Date().toLocaleString('en-US', { timeZone: "Europe/London" });
+
+		var formInfo = document.forms['themeForm'];
+		formInfo.themeDate.value = date;
+
+		let localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+		var themes = {{.Theme}}
+		var popular = {{.SinglePost}}
+
+		var themeLinks = document.getElementById("linksToThemes");
+		
+		var linkPrevDiv = document.createElement("div");
+		linkPrevDiv.className = "linkPrev"
+
+		var linkPrevImage = document.createElement('img');
+		linkPrevImage.setAttribute("src", "/static/caret-back.svg");
+
+		var linkNextDiv = document.createElement("div");
+		linkNextDiv.className = "linkNext"
+
+		var linkNextImage = document.createElement('img');
+		linkNextImage.setAttribute("src", "/static/caret-forward.svg");
+
+		var linkPrev = document.createElement("a");
+                linkPrev.href = "/?pageId=" + themes[0].Uid*-1;
+
+		linkPrev.appendChild(linkPrevImage)
+
+
+		linkPrevDiv.appendChild(linkPrev)
+                themeLinks.appendChild(linkPrevDiv)
+
+		var link = document.createElement("a");
+		link.href = "/?pageId=" + themes[themes.length - 1].Uid;
+		link.appendChild(linkNextImage)
+		linkNextDiv.appendChild(link)
+		themeLinks.appendChild(linkNextDiv)
+
+		//Remember color theme
+		const themeSwitch = document.querySelector('.theme-switch');
+		themeSwitch.checked = localStorage.getItem('switchedTheme') === 'true';
+
+		themeSwitch.addEventListener('change', function (e) {
+			if(e.currentTarget.checked === true) {
+				// Add item to localstorage
+				localStorage.setItem('switchedTheme', 'true');
+			} else {
+				// Remove item if theme is switched back to normal
+				localStorage.removeItem('switchedTheme');
+			}
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   class="ionicon"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg761"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs765" />
+  <title
+     id="title755">Alert</title>
+  <path
+     d="m 256,43.22995 c -12.38885,0 -23.71907,10.529095 -22.88934,22.889337 L 244.55533,375.12532 A 11.444668,11.444668 0 0 0 256,386.56999 v 0 a 11.444668,11.444668 0 0 0 11.44467,-11.44467 L 278.88934,66.119287 C 279.71907,53.759045 268.38885,43.22995 256,43.22995 Z"
+     fill="none"
+     stroke="currentColor"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     stroke-width="32"
+     id="path757"
+     style="stroke:#161616;stroke-width:10.814;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill" />
+  <circle
+     cx="256"
+     cy="430.90005"
+     r="27.402218"
+     fill="none"
+     stroke="currentColor"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     stroke-width="32"
+     id="circle759"
+     style="fill:none;fill-opacity:1;stroke:#161616;stroke-width:10;stroke-dasharray:none;stroke-opacity:1" />
+  <metadata
+     id="metadata1061">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Alert</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>
